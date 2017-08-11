@@ -8,3 +8,23 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
+
+var scores, roundScore, activePlayer, dice;
+
+scores = [0,0];
+roundScore = 0;
+activePlayer = 1; // to keep track of the player currently playing (0 or 1 for player 1 or player 2)
+
+dice = Math.floor(Math.random() * 6) + 1;
+
+// The object that gives access to the DOM is the document object
+document.querySelector('#current-' + activePlayer).textContent = dice; // you can call this a 'setter'
+// document.querySelector('#current-' + activePlayer).innerHTML = '<em>' + dice + '</em>'; // <em> italisizes (emphasizes) the text
+// but you can also use the .querySelector method to read only or be a 'getter' by assigning it to a variable,
+var x = document.querySelector('#score-0').textContent;
+console.log(x);
+// querySelector can also be used to change the CSS of some element
+document.querySelector('.dice').style.display = 'none'; /* so here we're selecting the class dice using the
+'.'(dot) selector and as we want to change the style and the property of how it's displayed we use these
+methods and set its value to 'none' so that the die is not displayed
+*/
