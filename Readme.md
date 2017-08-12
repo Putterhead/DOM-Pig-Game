@@ -5,4 +5,4 @@ Learning how to manipulate the DOM
 Learning how to read from the DOM
 Learning how to change CSS styles
 
-I've commented a lot of the code just as notes, please just ignore that.
+I've commented a lot of the code just to help me internalise this stuff, it's a mess, I know, so please just try to ignore that.
