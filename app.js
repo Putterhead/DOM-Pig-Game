@@ -13,7 +13,7 @@ var scores, roundScore, activePlayer;
 
 scores = [0,0];
 roundScore = 0;
-activePlayer = 1; // to keep track of the player currently playing (0 or 1 for player 1 or player 2)
+activePlayer = 0; // to keep track of the player currently playing (0 or 1 for player 1 or player 2)
 
 /* The object that gives access to the DOM is the document object
 document.querySelector('#current-' + activePlayer).textContent = dice; you can call this a 'setter'
@@ -67,4 +67,24 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
   diceDOM.src = 'dice-' + dice + '.png';
 
   //3. Update the roundScore ONLY IF the rolled number is NOT a 1
+  if (dice !== 1) {
+    roundScore += dice; // so here I update the roundScore adding the new die roll to it
+    document.querySelector('#current-' + activePlayer).textContent = roundScore; // and here I display it.
+  } else {
+    //Next player
+    roundScore = 0;
+    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+
+    document.getElementById('current-0').textContent = '0';
+    document.getElementById('current-1').textContent = '0';
+
+    // document.querySelector('.player-0-panel').classList.remove('active'); here the '.player-' selects the class to remove 'active'
+    // document.querySelector('.player-1-panel').classList.add('active'); here it adds the 'active' status (see the style.css) to player-1
+    document.querySelector('.player-0-panel').classList.toggle('active'); //instead of the aboe you can use the 'toggle' method
+    document.querySelector('.player-1-panel').classList.toggle('active');
+
+    document.querySelector('.dice').style.display = 'none';
+
+  }
+
 });
