@@ -39,10 +39,10 @@ function btn() {
   //Do something here
 }
 btn();
-and this would allow you to reuse it (Remember, to call the function we need the call function operator '()')
+and this would allow you to reuse it (reminder; to call the function you need the call function operator '()')
 Now I want to setup an event listner for the roll of the dice/clicking on the dice roll.
 If you look at the view file (HTML) the 'roll dice' button is given the class name 'btn-roll'
-There are a lot of events but in this case we use 'click'
+There are a lot of events but in this case I'll use 'click'
 see the docs for the rest: https://developer.mozilla.org/en-US/docs/Web/events
 I could then call it like this,
 
@@ -56,35 +56,51 @@ Instead of putting in the argument 'btn' you could enter in the function right t
 called an anonymous function - that's a function that doesn't have a name and can't be reused.
 */
 document.querySelector('.btn-roll').addEventListener('click', function() {
-
-  //1. We need a random number
+  //1. This gives me a random number between 1 and 6
   var dice = Math.floor(Math.random() * 6) + 1;
-
   //2. Display the result
   var diceDOM = document.querySelector('.dice');
   diceDOM.style.display = 'block'; /*renders the element as a block-level element - HTML code for starting on a
   new line and takes up the full width available. */
   diceDOM.src = 'dice-' + dice + '.png';
-
   //3. Update the roundScore ONLY IF the rolled number is NOT a 1
   if (dice !== 1) {
     roundScore += dice; // so here I update the roundScore adding the new die roll to it
     document.querySelector('#current-' + activePlayer).textContent = roundScore; // and here I display it.
   } else {
-    //Next player
-    roundScore = 0;
-    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
-
-    document.getElementById('current-0').textContent = '0';
-    document.getElementById('current-1').textContent = '0';
-
-    // document.querySelector('.player-0-panel').classList.remove('active'); here the '.player-' selects the class to remove 'active'
-    // document.querySelector('.player-1-panel').classList.add('active'); here it adds the 'active' status (see the style.css) to player-1
-    document.querySelector('.player-0-panel').classList.toggle('active'); //instead of the aboe you can use the 'toggle' method
-    document.querySelector('.player-1-panel').classList.toggle('active');
-
-    document.querySelector('.dice').style.display = 'none';
-
+    nextPlayer(); // I've defined this below
   }
-
 });
+
+document.querySelector('.btn-hold').addEventListener('click', function() {
+    scores[activePlayer] += roundScore; // I first tried an if/else statement below but his solution is so much more elegant
+    document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+  // if (activePlayer === 0) {
+  //   scores[0] += roundScore;
+  //   document.querySelector('#score-' + activePlayer).textContent = scores[0];
+  // } else {
+  //   scores[1] += roundScore;
+  //   document.querySelector('#score-' + activePlayer).textContent = scores[1];
+  // }
+  // Check if player won the game
+  if (scores[activePlayer] >= 20) {
+    document.querySelector('#name-' + activePlayer).textContent = 'Player ' + (activePlayer + 1) + ' Wins!';
+    document.querySelector('.dice').style.display = 'none';
+    document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner'); // ('.classList' accesses the classes that the respective element has)
+    document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active'); // remember, you have 'add', 'remove' and 'toggle'
+  } else {
+    nextPlayer();
+  }
+});
+
+function nextPlayer() {
+roundScore = 0;
+activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+document.getElementById('current-0').textContent = '0';
+document.getElementById('current-1').textContent = '0';
+// document.querySelector('.player-0-panel').classList.remove('active'); here the '.player-' selects the class to remove 'active'
+// document.querySelector('.player-1-panel').classList.add('active'); here it adds the 'active' status (see the style.css) to player-1
+document.querySelector('.player-0-panel').classList.toggle('active'); //instead of the aboe you can use the 'toggle' method
+document.querySelector('.player-1-panel').classList.toggle('active');
+document.querySelector('.dice').style.display = 'none';
+};
