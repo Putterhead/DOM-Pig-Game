@@ -10,31 +10,21 @@ GAME RULES:
 */
 
 var scores, roundScore, activePlayer;
+init();
+/* scores = [0,0];
+   roundScore = 0;
+   activePlayer = 0; to keep track of the player currently playing (0 or 1 for player 1 or player 2)
+I commented these out to enable the init function for the new-game button.
 
-scores = [0,0];
-roundScore = 0;
-activePlayer = 0; // to keep track of the player currently playing (0 or 1 for player 1 or player 2)
-
-/* The object that gives access to the DOM is the document object
+The object that gives access to the DOM is the document object
 document.querySelector('#current-' + activePlayer).textContent = dice; you can call this a 'setter'
 document.querySelector('#current-' + activePlayer).innerHTML = '<em>' + dice + '</em>'; // <em> italisizes (emphasizes) the text
 but you can also use the .querySelector method to read only or be a 'getter' by assigning it to a variable,
 var x = document.querySelector('#score-0').textContent;
 console.log(x);
 querySelector can also be used to change the CSS of some element
-*/
-document.querySelector('.dice').style.display = 'none'; /* so here we're selecting the class dice using the
-'.'(dot) selector and as we want to change the style and the property of how it's displayed we use these
-methods and set its value to 'none' so that the die is not displayed
-*/
-document.getElementById('score-0').textContent = '0'; /* Rather than using querySelector, I'm now using
-.getElementById as its much faster, and then I set it to 0. An then I do that for the other player and also
-for the current roll scores of each player */
-document.getElementById('score-1').textContent = '0';
-document.getElementById('current-0').textContent = '0';
-document.getElementById('current-1').textContent = '0';
 
-/* I need now a function to call when the button is clicked and you could do something like this,
+I need now a function to call when the button is clicked and you could do something like this,
 function btn() {
   //Do something here
 }
@@ -93,14 +83,39 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
   }
 });
 
+document.querySelector('.btn-new').addEventListener('click', init); // If I add the call operator () here, init would be immediately called!
+
 function nextPlayer() {
-roundScore = 0;
-activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
-document.getElementById('current-0').textContent = '0';
-document.getElementById('current-1').textContent = '0';
-// document.querySelector('.player-0-panel').classList.remove('active'); here the '.player-' selects the class to remove 'active'
-// document.querySelector('.player-1-panel').classList.add('active'); here it adds the 'active' status (see the style.css) to player-1
-document.querySelector('.player-0-panel').classList.toggle('active'); //instead of the aboe you can use the 'toggle' method
-document.querySelector('.player-1-panel').classList.toggle('active');
-document.querySelector('.dice').style.display = 'none';
+  roundScore = 0;
+  activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+  document.getElementById('current-0').textContent = '0';
+  document.getElementById('current-1').textContent = '0';
+  // document.querySelector('.player-0-panel').classList.remove('active'); here the '.player-' selects the class to remove 'active'
+  // document.querySelector('.player-1-panel').classList.add('active'); here it adds the 'active' status (see the style.css) to player-1
+  document.querySelector('.player-0-panel').classList.toggle('active'); //instead of the aboe you can use the 'toggle' method
+  document.querySelector('.player-1-panel').classList.toggle('active');
+  document.querySelector('.dice').style.display = 'none';
+};
+
+function init() {
+  scores = [0,0];
+  roundScore = 0;
+  activePlayer = 0;
+  document.querySelector('.dice').style.display = 'none'; /* so here we're selecting the class dice using the
+  '.'(dot) selector and as we want to change the style and the property of how it's displayed we use these
+  methods and set its value to 'none' so that the die is not displayed
+  */
+  document.getElementById('score-0').textContent = '0'; /* Rather than using querySelector, I'm now using
+  .getElementById as its much faster, and then I set it to 0. An then I do that for the other player and also
+  for the current roll scores of each player */
+  document.getElementById('score-1').textContent = '0';
+  document.getElementById('current-0').textContent = '0';
+  document.getElementById('current-1').textContent = '0';
+  document.getElementById('name-0').textContent = 'PLAYER 1';
+  document.getElementById('name-1').textContent = 'PLAYER 2';
+  document.querySelector('.player-0-panel').classList.remove('winner');
+  document.querySelector('.player-1-panel').classList.remove('winner');
+  document.querySelector('.player-0-panel').classList.remove('active');
+  document.querySelector('.player-1-panel').classList.remove('active');
+  document.querySelector('.player-0-panel').classList.add('active');
 };
