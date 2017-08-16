@@ -9,7 +9,7 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activePlayer;
+var scores, roundScore, activePlayer, gameFinished;
 init();
 /* scores = [0,0];
    roundScore = 0;
@@ -46,40 +46,45 @@ Instead of putting in the argument 'btn' you could enter in the function right t
 called an anonymous function - that's a function that doesn't have a name and can't be reused.
 */
 document.querySelector('.btn-roll').addEventListener('click', function() {
-  //1. This gives me a random number between 1 and 6
-  var dice = Math.floor(Math.random() * 6) + 1;
-  //2. Display the result
-  var diceDOM = document.querySelector('.dice');
-  diceDOM.style.display = 'block'; /*renders the element as a block-level element - HTML code for starting on a
-  new line and takes up the full width available. */
-  diceDOM.src = 'dice-' + dice + '.png';
-  //3. Update the roundScore ONLY IF the rolled number is NOT a 1
-  if (dice !== 1) {
-    roundScore += dice; // so here I update the roundScore adding the new die roll to it
-    document.querySelector('#current-' + activePlayer).textContent = roundScore; // and here I display it.
-  } else {
-    nextPlayer(); // I've defined this below
-  }
+  if (gameFinished != true) { // the state variable here checks first if the game is finished, if not, the game carries on
+    //1. This gives me a random number between 1 and 6
+    var dice = Math.floor(Math.random() * 6) + 1;
+    //2. Display the result
+    var diceDOM = document.querySelector('.dice');
+    diceDOM.style.display = 'block'; /*renders the element as a block-level element - HTML code for starting on a
+    new line and takes up the full width available. */
+    diceDOM.src = 'dice-' + dice + '.png';
+    //3. Update the roundScore ONLY IF the rolled number is NOT a 1
+    if (dice !== 1) {
+      roundScore += dice; // so here I update the roundScore adding the new die roll to it
+      document.querySelector('#current-' + activePlayer).textContent = roundScore; // and here I display it.
+    } else {
+      nextPlayer(); // I've defined this below
+    }
+  };
 });
 
 document.querySelector('.btn-hold').addEventListener('click', function() {
-    scores[activePlayer] += roundScore; // I first tried an if/else statement below but his solution is so much more elegant
+  if (gameFinished != true) {
+    scores[activePlayer] += roundScore; // I first tried an if/else statement below, which works, but his solution is so much more elegant
     document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
-  // if (activePlayer === 0) {
-  //   scores[0] += roundScore;
-  //   document.querySelector('#score-' + activePlayer).textContent = scores[0];
-  // } else {
-  //   scores[1] += roundScore;
-  //   document.querySelector('#score-' + activePlayer).textContent = scores[1];
-  // }
-  // Check if player won the game
-  if (scores[activePlayer] >= 20) {
+    // if (activePlayer === 0) {
+    //   scores[0] += roundScore;
+    //   document.querySelector('#score-' + activePlayer).textContent = scores[0];
+    // } else {
+    //   scores[1] += roundScore;
+    //   document.querySelector('#score-' + activePlayer).textContent = scores[1];
+    // }
+    // Check if player won the game
+    if (scores[activePlayer] >= 20) {
     document.querySelector('#name-' + activePlayer).textContent = 'Player ' + (activePlayer + 1) + ' Wins!';
     document.querySelector('.dice').style.display = 'none';
     document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner'); // ('.classList' accesses the classes that the respective element has)
     document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active'); // remember, you have 'add', 'remove' and 'toggle'
-  } else {
+    gameFinished = true;
+    } else {
     nextPlayer();
+    }
   }
 });
 
@@ -98,6 +103,7 @@ function nextPlayer() {
 };
 
 function init() {
+  gameFinished = false;
   scores = [0,0];
   roundScore = 0;
   activePlayer = 0;
