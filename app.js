@@ -9,8 +9,9 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activePlayer, gameFinished;
+var scores, roundScore, activePlayer, player1Rolls, player2Rolls, gameFinished;
 init();
+
 /* scores = [0,0];
    roundScore = 0;
    activePlayer = 0; to keep track of the player currently playing (0 or 1 for player 1 or player 2)
@@ -47,20 +48,43 @@ called an anonymous function - that's a function that doesn't have a name and ca
 */
 document.querySelector('.btn-roll').addEventListener('click', function() {
   if (gameFinished != true) { // the state variable here checks first if the game is finished, if not, the game carries on
-    //1. This gives me a random number between 1 and 6
-    var dice = Math.floor(Math.random() * 6) + 1;
-    //2. Display the result
-    var diceDOM = document.querySelector('.dice');
-    diceDOM.style.display = 'block'; /*renders the element as a block-level element - HTML code for starting on a
-    new line and takes up the full width available. */
-    diceDOM.src = 'dice-' + dice + '.png';
-    //3. Update the roundScore ONLY IF the rolled number is NOT a 1
-    if (dice !== 1) {
-      roundScore += dice; // so here I update the roundScore adding the new die roll to it
-      document.querySelector('#current-' + activePlayer).textContent = roundScore; // and here I display it.
-    } else {
-      nextPlayer(); // I've defined this below
-    }
+      //1. This gives me a random number between 1 and 6
+      var dice = Math.floor(Math.random() * 6) + 1;
+      if (activePlayer === 0) {
+      player1Rolls[0] = player1Rolls[1];
+      player1Rolls[1] = dice;
+      console.log('previous roll of player' + (activePlayer + 1) + ' = ' + player1Rolls[0]);
+      console.log('current roll of player' + (activePlayer + 1) + ' = ' + player1Rolls[1]);
+      if (player1Rolls[1] + player1Rolls[0] === 12) {
+        document.getElementById('score-' + acttivePlayer).textContent = '0';
+        nextPlayer();
+      } else if (player1Rolls[0] !== 6 && dice !== 1) {
+        //2. Display the result
+        var diceDOM = document.querySelector('.dice');
+        diceDOM.style.display = 'block'; /*renders the element as a block-level element - HTML code for starting on a
+        new line and takes up the full width available. */
+        diceDOM.src = 'dice-' + dice + '.png';
+        //3. Update the roundScore ONLY IF the rolled number is NOT a 1
+        // } else if (dice !== 1) {
+        roundScore += dice; // so here I update the roundScore adding the new die roll to it
+        document.querySelector('#current-' + activePlayer).textContent = roundScore; // and here I display it.
+      } else {
+        player2Rolls[0] = player2Rolls[1];
+        player2Rolls[1] = dice;
+        console.log('previous roll of player' + (activePlayer + 1) + ' = ' + player2Rolls[0]);
+        console.log('current roll of player' + (activePlayer + 1) + ' = ' + player2Rolls[1]);
+          if (player2Rolls[1] + player2Rolls[0] === 12) {
+            document.getElementById('score-' + activePlayer).textContent = '0';
+            nextPlayer();
+          } else if (player2Rolls[0] !== 6 && dice !== 1) {
+            var diceDOM = document.querySelector('.dice');
+            diceDOM.style.display = 'block';
+            diceDOM.src = 'dice-' + dice + '.png';
+            roundScore += dice;
+            document.querySelector('#current-' + activePlayer).textContent = roundScore;
+            }
+        }
+      }
   };
 });
 
@@ -107,6 +131,8 @@ function init() {
   scores = [0,0];
   roundScore = 0;
   activePlayer = 0;
+  player1Rolls = [0,0];
+  player2Rolls = [0,0];
   document.querySelector('.dice').style.display = 'none'; /* so here we're selecting the class dice using the
   '.'(dot) selector and as we want to change the style and the property of how it's displayed we use these
   methods and set its value to 'none' so that the die is not displayed
@@ -125,3 +151,18 @@ function init() {
   document.querySelector('.player-1-panel').classList.remove('active');
   document.querySelector('.player-0-panel').classList.add('active');
 };
+
+/*
+THE 3 CHALLENGES
+Change the game to follow these rules:
+
+1. A player looses his ENTIRE score when he rolls two 6's in a row. After that, it's the next player's
+turn. (Hint: Always save the previous dice roll in a separate variable so that you can access the present
+and past dice roll at the same time.)
+2. Add an input field to the HTML where players can set the winning score, so that they can change the
+predefined score of 100. (Hint: you can read that value with the .value property in the JavaScript. This is a
+good opportunity to use google to figure this out :)
+3. Add another dice to the game, so that there are two dice. The player looses his current score
+when one of them is a 1. (Hint: you will need CSS to position the second dice, so take a look at the CSS
+code for the first one.)
+*/
