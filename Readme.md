@@ -19,8 +19,7 @@ THE 3 CHALLENGES
 As part of this exercise I had to change the game to follow these rules:
 
 1. A player looses his ENTIRE score when he rolls two 6's in a row. After that, it's the next player's turn. (Hint: Always save the previous dice roll in a separate variable so that you can access the present and past dice roll at the same time.)
-2. Add an input field to the HTML where players can set the winning score, so that they can change the predefined score of 100. (Hint: you can read that value with the .value property in the JavaScript. This is a
-good opportunity to use google to figure this out :)
+2. Add an input field to the HTML where players can set the winning score, so that they can change the predefined score of 100. (Hint: you can read that value with the .value property in the JavaScript. This is a good opportunity to use google to figure this out :)
 3. Add another dice to the game, so that there are two dice. The player looses his current score when one of them is a 1. (Hint: you will need CSS to position the second dice, so take a look at the CSS
 code for the first one.)
 
