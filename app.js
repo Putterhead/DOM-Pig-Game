@@ -1,7 +1,7 @@
 
 
-var scores, roundScore, activePlayer, winningScore, gameFinished; //player1Rolls, player2Rolls
-
+var scores, roundScore, activePlayer, gameFinished; //player1Rolls, player2Rolls
+var winningScore = 100
 init();
 
 var lastDice;
@@ -68,6 +68,16 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
   if (gameFinished != true) {
     scores[activePlayer] += roundScore; // I first tried an if/else statement, which worked fine, but his solution ([activePlayer]) is so much more elegant
     document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+
+    var input = document.querySelector('.final-score').value; // The 'value' property is used instead of using 'textContent' or 'innerHTML'. This will give me
+                                           /* the content that the user inputs into the input-field.
+    But what if this input value is empty? As "undefined, 0, null or ''" are COERCED to false, and anything else is COERCED to true, with an if/else statement
+    I can respond to this */
+    if (input) { // I dont' want to use this input if its empty - so if it's true (i.e. it has an input) I want the winning score to equal the input
+      winningScore = input;
+    } else {
+      winningScore; // If the user doesn't enter a value, the winning score defaults to 100!
+    }
     if (scores[activePlayer] >= winningScore) {
     document.querySelector('#name-' + activePlayer).textContent = 'Player ' + (activePlayer + 1) + ' Wins!';
     document.querySelector('.dice').style.display = 'none';
