@@ -1,11 +1,12 @@
 This was an exercise I did in creating an interface in JS (the CSS and HTML were provided) for a dice rolling game and is based on Jonas Schmedtmanns' Udemy course (https://www.udemy.com/the-complete-javascript-course/learn/v4/overview).
 
 A very basic dice rolling game with the main objectives of this exercise being:
-Learning how to manipulate the DOM
-Learning how to read from the DOM
-Learning how to change CSS styles
+- Learning how to manipulate the DOM
+- Learning how to read from the DOM
+- Learning how to change CSS styles
 
 I've commented just about every line of code, it's a mess, I know. But please just try to ignore that - writing the comments, really helps me internalise it.
+At the moment I'm not too happy with the functions as I feel most of them violate the single responsibility principle.
 
 GAME RULES:
 
@@ -15,7 +16,8 @@ GAME RULES:
 - The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
 - The first player to reach 100 points on GLOBAL score wins the game
 
-THE 3 CHALLENGES
+THE 3 CHALLENGES:
+
 As part of this exercise I had to change the game to follow these rules:
 
 1. A player looses his ENTIRE score when he rolls two 6's in a row. After that, it's the next player's turn. (Hint: Always save the previous dice roll in a separate variable so that you can access the present and past dice roll at the same time.)
@@ -23,7 +25,8 @@ As part of this exercise I had to change the game to follow these rules:
 3. Add another dice to the game, so that there are two dice. The player looses his current score when one of them is a 1. (Hint: you will need CSS to position the second dice, so take a look at the CSS
 code for the first one.)
 
-My Notes
+MY NOTES:
+
 /* scores = [0,0];
    roundScore = 0;
    activePlayer = 0; to keep track of the player currently playing (0 or 1 for player 1 or player 2)

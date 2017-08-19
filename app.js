@@ -6,17 +6,33 @@ init();
 
 var lastDice;
 
+// function roll() {
+//   Math.floor(Math.random() * 6) + 1;
+// };
+
 document.querySelector('.btn-roll').addEventListener('click', function() {
   if (gameFinished != true) { // the state variable here checks first if the game is finished, if not, the game carries on
-    var dice = Math.floor(Math.random() * 6) + 1;
-      var diceDOM = document.querySelector('.dice');
-      diceDOM.style.display = 'block';
-      diceDOM.src = 'dice-' + dice + '.png';
+    var dice1 = Math.floor(Math.random() * 6) + 1;
+    var dice2 = Math.floor(Math.random() * 6) + 1;
+    console.log('player-' + (activePlayer + 1) + '\'s previous roll was = ' + lastDice + ', their current roll is = ' + [dice1, dice2]);
 
-      if (dice === 6 && lastDice === 6) {
-        scores[activePlayer] = 0;
-        document.querySelector('#score-' + activePlayer).textContent = '0';
-        nextPlayer();
+    document.getElementById('dice-1').style.display = 'block';
+    document.getElementById('dice-2').style.display = 'block';
+    document.getElementById('dice-1').src = 'dice-' + dice1 + '.png';
+    document.getElementById('dice-2').src = 'dice-' + dice2 + '.png';
+
+    if (dice1 !== 1 && dice2 !== 1) {
+      roundScore += dice1 + dice2;
+      document.querySelector('#current-' + activePlayer).textContent = roundScore;
+    } else {
+      nextPlayer();
+    }
+
+    lastDice = [dice1, dice2];
+      /* if (dice === 6 && lastDice === 6) {
+         scores[activePlayer] = 0;
+         document.querySelector('#score-' + activePlayer).textContent = '0';
+         nextPlayer();
       } else if (dice !== 1) {
         roundScore += dice;
         document.querySelector('#current-' + activePlayer).textContent = roundScore;
@@ -24,10 +40,10 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         nextPlayer();
       }
 
-      lastDice = dice; /* below, commented out, is my solution (verbose) and obviously way too long for a single function.
-                       I didn't think of assigning 'dice' to another variable
-                       at the end of the function, after 'dice' had been set by the current roll earlier in the function. I need
-                       to be more mindful of the execution context and the execution stack.
+      /* lastDice = dice; Below, commented out, is my solution. Verbose and obviously way too long for a single function.
+                       I didn't think of assigning 'dice' to another variable at the end of the function, after 'dice'
+                       had been set by the current roll earlier in the function. I need to be more mindful of the
+                       execution context and the execution stack.
       if (activePlayer === 0) {
       player1Rolls[0] = player1Rolls[1];
       player1Rolls[1] = dice;
@@ -80,27 +96,37 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
     }
     if (scores[activePlayer] >= winningScore) {
     document.querySelector('#name-' + activePlayer).textContent = 'Player ' + (activePlayer + 1) + ' Wins!';
-    document.querySelector('.dice').style.display = 'none';
+    hideDice();
     document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner'); // ('.classList' accesses the classes that the respective element has)
     document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active'); // remember, you have 'add', 'remove' and 'toggle'
     gameFinished = true;
     } else {
-    nextPlayer();
+      nextPlayer();
     }
   }
 });
 
-document.querySelector('.btn-new').addEventListener('click', init); // If I add the call operator () here, init would be immediately called!
+function hideDice() {
+  document.getElementById('dice-1').style.display = 'none';
+  document.getElementById('dice-2').style.display = 'none';
+}
 
 function nextPlayer() {
-  roundScore = 0;
   activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+  roundScore = 0;
+
   document.getElementById('current-0').textContent = '0';
   document.getElementById('current-1').textContent = '0';
+
   document.querySelector('.player-0-panel').classList.toggle('active');
   document.querySelector('.player-1-panel').classList.toggle('active');
-  document.querySelector('.dice').style.display = 'none';
-};
+
+  hideDice();
+  // document.getElementById('dice-1').style.display = 'none';
+  // document.getElementById('dice-2').style.display = 'none';
+}
+
+document.querySelector('.btn-new').addEventListener('click', init); // If I add the call operator () here, init would be immediately called!
 
 function init() {
   gameFinished = false;
@@ -109,7 +135,10 @@ function init() {
   activePlayer = 0;
   // player1Rolls = [0,0]; // [previous, current]
   // player2Rolls = [0,0]; // [previous, current]
-  document.querySelector('.dice').style.display = 'none'; /* so here we're selecting the class dice using the
+  hideDice();
+  /* I replaced the two lines below with the function 'hideDice'
+  document.getElementById('dice-1').style.display = 'none';
+  document.getElementById('dice-2').style.display = 'none'; so here we're selecting the class dice using the
   '.'(dot) selector and as we want to change the style and the property of how it's displayed we use these
   methods and set its value to 'none' so that the die is not displayed
   */
@@ -126,4 +155,4 @@ function init() {
   document.querySelector('.player-0-panel').classList.remove('active');
   document.querySelector('.player-1-panel').classList.remove('active');
   document.querySelector('.player-0-panel').classList.add('active');
-};
+}
